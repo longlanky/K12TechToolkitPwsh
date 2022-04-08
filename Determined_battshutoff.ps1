@@ -1,6 +1,7 @@
 #Nolan's Determined Battery Shutoff script v1.0 07042022
 #Intended for use with removable media
 #Ensure Caffeine64.exe is present in directory with this script
+#Quick and dirty script to keep device awake, then shutdown or reboot when battery level reaches predetermined percentage 
 
 #Battery presence check
 $batt_present = Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty Status
@@ -68,7 +69,8 @@ do {
     $batper = Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining
     #$limit = 55
     #DateLimit variable: Set day for script to stop working, formatted as: Year, eg. "2022", followed by the day in the year, eg. "252"
-    #The purpose of this is to allow for the script to run during 
+    #The purpose of this parameter is to prevent the script from running past a predetermined date if launched automatically.
+    #This is off by default, see graveyard code below for how to enable.
     $DateLimit = 2022252
     $DayofYear = (Get-Date).Dayofyear
     $year = Get-Date -UFormat %Y
