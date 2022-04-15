@@ -26,10 +26,10 @@ switch ($Model) {
     "Optiplex 9030 AIO" { $UpdateFile = Get-ChildItem -Path "$UpdatePath" -Recurse -Filter '*9030*' | Select-Object -ExpandProperty "Name" }
 }
 
-If ($UpdateFile -eq $null) {Write-Host "Update file not present, exiting."; exit}
+If ($null -eq $UpdateFile) {Write-Host "Update file not present, exiting."; exit}
 
 $PendingUpdate = (Select-String -InputObject "$UpdateFile" -Pattern '([0-9]+(\.[0-9]+)+)' -AllMatches).Matches | Foreach-Object { $_.Groups[1].Value }
-if ($PendingUpdate -gt $CurrentFWVersion) {
+if ([System.Version]($PendingUpdate) -gt [System.Version]($CurrentFWVersion)) {
 #Execute the firmware update
 Write-Host "Updating from $CurrentFWVersion to $pendingupdate."
 Start-Process -FilePath "$UpdatePath\$UpdateFile" -ArgumentList "/s /r /forceit /p=BIOSPASSWORDHERE" -NoNewWindow -Wait
