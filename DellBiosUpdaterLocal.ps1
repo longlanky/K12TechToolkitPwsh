@@ -33,7 +33,7 @@ if ([System.Version]($PendingUpdate) -gt [System.Version]($CurrentFWVersion)) {
 #Execute the firmware update
 Write-Host "Updating from $CurrentFWVersion to $pendingupdate."
 Start-Process -FilePath "$UpdatePath\$UpdateFile" -ArgumentList "/s /r /forceit /p=BIOSPASSWORDHERE" -NoNewWindow -Wait
-#Remove arguments /s /r /forceit for debugging purposes, replace if not present before prdocution    
+#Remove arguments /s /r /forceit for debugging purposes, replace if not present before production    
 }
 else {
 Write-Host "Newer update not present."
