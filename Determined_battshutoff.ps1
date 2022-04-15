@@ -53,7 +53,7 @@ else {
 $rors = "Reboot"
 }
 
-$limit = Read-Host -Prompt 'Battery level to prompt shutdown as decimal, eg. "55", or "70"'
+$limit = Read-Host -Prompt 'Battery level to prompt shutdown as integer, eg. "55", or "70"'
 
 #Check for non-integer answer and give error:
 #$integral = $limit -is [int]
