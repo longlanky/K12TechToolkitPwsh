@@ -1,5 +1,8 @@
 #Set BIOS password manually below!
-#Must have directory in parent directory above script named "Updates" which contains official Dell bios updater executables
+#Assumes Dell firmware updaters in same directory as script
+#Ensure version string and model number is shown in update file
+#Not neccessary, but updater executable name can be simplified to VersionNumber_ModelNumber.exe
+#eg. 3120_1.7.0.exe
 
 #Variable declarations and initializations
 $CurrentFWVersion = Get-WmiObject -ClassName "Win32_BIOS" | Select-Object -ExpandProperty "Name"
