@@ -1,4 +1,4 @@
-#Determined Battery Shutoff script 23.05.22
+#Determined Battery Shutoff script 26.01.23
 #Intended for use with removable media
 
 #Battery presence check
@@ -16,9 +16,6 @@ else {Write-Host "Input not understood, exiting"; start-sleep 1; break}
 #Check if in OOBE to determine if needs to be kept awake.
 $ExplorerProcesses = @(Get-CimInstance -ClassName 'Win32_Process' -Filter "Name like 'explorer.exe'" -ErrorAction 'Ignore')
 foreach ($TargetProcess in $ExplorerProcesses) { $Username = (Invoke-CimMethod -InputObject $TargetProcess -MethodName GetOwner).User}
-if ($UserName -ne 'defaultuser0') {
-    $NoSleep = '(New-Object -ComObject wscript.shell).SendKeys({+{F15}})'
-} Else {$NoSleep = $null}
 
 #Pull initial reading on battery level and prompt user for later decisions.
 $batper = Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining
@@ -44,8 +41,7 @@ $BattTimeRemaining = Get-CimInstance -ClassName Win32_Battery | Measure-Object -
 if ($BattTimeRemaining -eq 71582788) {$TimeToTarget = "Forever"}
 if ($BattTimeRemaining -eq 71582788 -and $noAC -match "True") {$TimeToTarget = "Calculating, please wait for refresh."}
 if ($BattTimeRemaining -ne 71582788) {$TimeToTarget = New-Timespan -minutes ((($BatPer-$limit)/$BatPer)*$BattTimeRemaining)} 
-Try {Invoke-Expression -Command $NoSleep} Catch {$null}
-
+if ($UserName -ne 'defaultuser0') {(New-Object -ComObject wscript.shell).SendKeys({+{F15}})}
 
 Clear-Host
     "Current charge: $batper%"
